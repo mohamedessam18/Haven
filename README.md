@@ -4,7 +4,7 @@ A mobile home-security interface built with Flutter for Android and iOS. All dev
 
 ## Run
 
-From the repository root, run `flutter pub get`, then `flutter run` with an Android emulator, iOS simulator or connected phone. iOS device distribution requires your Apple signing configuration. `flutter build apk` creates an Android package when an Android SDK is configured. `flutter build ios --simulator --debug` creates a simulator build.
+From this folder, run `flutter pub get`, then `flutter run` with an Android emulator, iOS simulator or connected phone. iOS device distribution requires your Apple signing configuration. `flutter build apk` creates an Android package when an Android SDK is configured. `flutter build ios --simulator --debug` creates a simulator build.
 
 ## Clean architecture
 
@@ -19,7 +19,10 @@ Inject a different `SecurityRepository` to connect backend data later. The curre
 
 ## Flows
 
-Home → Stay / Away / confirmed Disarm. Devices → room filter → bottom-sheet detail → lock/unlock or sensor test/clear. Activity → all events or test alerts → clear test alerts. Settings → in-app confirmation preference and app information. Android back returns to Home from another tab. Scroll positions persist across tab changes. Haptics, tap feedback, animated mode changes, screen transitions and modal sheets are native Flutter interactions; screen transitions honor reduced-motion settings.
+Home → Dashboard preview with four circular device battery gauges → tap anywhere in the section to open the full Dashboard with gauges for every device.
+
+
+Home → Stay / Away / confirmed Disarm. Devices → room filter → bottom-sheet detail → lock/unlock or sensor test/clear. System Log → all events or test alerts → clear test alerts. Settings → in-app confirmation preference and app information. Android back returns to Home from another tab. Scroll positions persist across tab changes. Haptics, tap feedback, animated mode changes, screen transitions and modal sheets are native Flutter interactions; screen transitions honor reduced-motion settings.
 
 ## Branding
 
@@ -36,7 +39,3 @@ Tests cover independent safety-alert clearing, local persistence round trips and
 The iOS project targets iOS 15 or later to match the installed Xcode toolchain. 
 
 Verified locally: `flutter analyze` passed, all 3 tests passed, Android debug APK built, and the application ran on the iPhone 17 simulator. The final APK includes legacy, adaptive and themed launcher icon resources. The iOS launcher icon was verified on the simulator home screen.
-
-## Interface preview
-
-![Haven mobile interface](flutter-preview.jpg)

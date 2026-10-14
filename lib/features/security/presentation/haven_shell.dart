@@ -6,6 +6,7 @@ import '../application/security_controller.dart';
 import '../domain/security.dart';
 import 'widgets.dart';
 import 'home_screen.dart';
+import 'dashboard_screen.dart';
 import 'devices_screen.dart';
 import 'activity_screen.dart';
 import 'settings_screen.dart';
@@ -150,7 +151,7 @@ class _HavenShellState extends State<HavenShell> {
                   Text(
                     isLock
                         ? 'Manage access to your home. This preview simulates the lock.'
-                        : 'Test how a sensor alert appears in your home overview and activity feed.',
+                        : 'Test how a sensor alert appears in your home overview and system log.',
                     style: const TextStyle(
                       fontSize: 12,
                       height: 1.8,
@@ -228,6 +229,7 @@ class _HavenShellState extends State<HavenShell> {
           state: state,
           onNotifications: widget.controller.toggleNotifications,
         ),
+        DashboardScreen(state: state, onBack: () => navigate(0)),
       ];
       return PopScope(
         canPop: page == 0,
@@ -273,7 +275,7 @@ class _HavenShellState extends State<HavenShell> {
                 child: const Text('My home', style: TextStyle(fontSize: 11)),
               ),
               IconButton(
-                tooltip: 'View activity',
+                tooltip: 'View system log',
                 onPressed: () => navigate(2),
                 icon: const Icon(Icons.notifications_none_rounded, size: 22),
               ),
@@ -340,7 +342,7 @@ class _HavenShellState extends State<HavenShell> {
               backgroundColor: Colors.white,
               surfaceTintColor: Colors.transparent,
               indicatorColor: HavenColors.pale,
-              selectedIndex: page,
+              selectedIndex: page == 4 ? 0 : page,
               onDestinationSelected: navigate,
               height: 76,
               labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
@@ -357,17 +359,29 @@ class _HavenShellState extends State<HavenShell> {
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.timeline_rounded),
-                  label: 'Activity',
+                  label: 'System Log',
                 ),
-                NavigationDestination(
-                  icon: Icon(Icons.tune_rounded),
-                  label: 'Settings',
-                ),
+                NavigationDestination(icon: _SettingsIcon(), label: 'Settings'),
               ],
             ),
           ),
         ),
       );
     },
+  );
+}
+
+class _SettingsIcon extends StatelessWidget {
+  const _SettingsIcon();
+  @override
+  Widget build(BuildContext context) => SvgPicture.asset(
+    'assets/brand/settings.svg',
+    width: 24,
+    height: 24,
+    excludeFromSemantics: true,
+    colorFilter: ColorFilter.mode(
+      IconTheme.of(context).color ?? HavenColors.ink,
+      BlendMode.srcIn,
+    ),
   );
 }

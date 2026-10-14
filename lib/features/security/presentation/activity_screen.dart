@@ -26,7 +26,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         children: [
           const PageHeading(
             eyebrow: 'THE LITTLE THINGS, RECORDED',
-            title: 'Activity.',
+            title: 'System Log.',
             subtitle: 'Know what happened, even when you weren’t home.',
           ),
           const SizedBox(height: 24),
@@ -36,7 +36,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
               for (final value in [false, true])
                 ChoiceChip(
                   label: Text(
-                    value ? 'Test alerts' : 'All activity',
+                    value ? 'Test alerts' : 'All logs',
                     style: const TextStyle(fontSize: 11),
                   ),
                   selected: onlyAlerts == value,

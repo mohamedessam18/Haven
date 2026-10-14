@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:haven/main.dart';
+import 'package:haven/features/security/presentation/device_dashboard.dart';
 import 'package:haven/features/security/data/local_security_repository.dart';
 import 'package:haven/features/security/application/security_controller.dart';
 import 'package:haven/features/security/domain/security.dart';
@@ -42,6 +43,52 @@ void main() {
       expect(restored.events.first.title, 'Water sensor: test alert');
     },
   );
+  testWidgets('Home preview opens the full Dashboard and System Log', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    SharedPreferences.setMockInitialValues({});
+    final repo = LocalSecurityRepository(await SharedPreferences.getInstance());
+    final controller = SecurityController(
+      repository: repo,
+      state: await repo.load(),
+    );
+    await tester.pumpWidget(HavenApp(controller: controller));
+    await tester.pumpAndSettle();
+    expect(find.text('Dashboard.'), findsNothing);
+    final dashboard = find.byType(DeviceDashboard);
+    expect(
+      find.descendant(
+        of: dashboard,
+        matching: find.byType(CircularProgressIndicator),
+      ),
+      findsNWidgets(4),
+    );
+    final door = find.descendant(
+      of: dashboard,
+      matching: find.text('Front door'),
+    );
+    await tester.ensureVisible(door);
+    await tester.tap(door);
+    await tester.pumpAndSettle();
+    expect(find.text('Dashboard.'), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsNWidgets(7));
+    expect(find.text('Unlock door'), findsNothing);
+    await tester.tap(find.text('Back to Home'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Dashboard'));
+    await tester.tap(find.text('Dashboard'));
+    await tester.pumpAndSettle();
+    expect(find.text('Dashboard.'), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsNWidgets(7));
+    await tester.tap(find.text('System Log'));
+    await tester.pumpAndSettle();
+    expect(find.text('System Log.'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
   testWidgets(
     'Mobile navigation, disarm confirmation and device controls work',
     (tester) async {

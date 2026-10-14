@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../core/theme/haven_theme.dart';
 import '../domain/security.dart';
 import 'widgets.dart';
+import 'device_dashboard.dart';
 
 class HomeScreen extends StatelessWidget {
   final SecurityState state;
@@ -40,6 +41,8 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(height: 16),
         _ModeSelector(mode: state.mode, onMode: onMode),
         const SizedBox(height: 23),
+        DeviceDashboard(state: state, onTap: () => onNavigate(4)),
+        const SizedBox(height: 23),
         SectionTitle(
           'Your devices  ·  ${state.devices.length}',
           action: 'View all',
@@ -49,7 +52,7 @@ class HomeScreen extends StatelessWidget {
         DeviceGrid(devices: state.devices.take(4).toList(), onDevice: onDevice),
         const SizedBox(height: 22),
         SectionTitle(
-          'Recent activity',
+          'Recent system logs',
           action: 'See all',
           onTap: () => onNavigate(2),
         ),

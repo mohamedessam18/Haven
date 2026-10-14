@@ -6,7 +6,7 @@ class SecurityDevice {
   final String id, name, room, reading;
   final DeviceType type;
   final int battery;
-  final bool active;
+  final bool active, online;
   const SecurityDevice({
     required this.id,
     required this.name,
@@ -15,8 +15,9 @@ class SecurityDevice {
     required this.type,
     required this.battery,
     this.active = false,
+    this.online = true,
   });
-  SecurityDevice copyWith({bool? active}) => SecurityDevice(
+  SecurityDevice copyWith({bool? active, bool? online}) => SecurityDevice(
     id: id,
     name: name,
     room: room,
@@ -24,6 +25,7 @@ class SecurityDevice {
     type: type,
     battery: battery,
     active: active ?? this.active,
+    online: online ?? this.online,
   );
   String get status => type == DeviceType.lock
       ? (active ? 'Unlocked' : 'Locked')
